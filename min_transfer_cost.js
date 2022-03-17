@@ -41,8 +41,9 @@ function Solve(k, arr){
     });
     let transArr = Array(arr.length).fill(0);
     Object.entries(pNums).forEach(([key, val]) => {
-        // let nKeys = Object.keys(nNums);
-        for(let i=key-k; i<=key+k && i!==key; i++){
+        key=+key;
+        val=+val;
+        for(let i=key-k; i<=key+k; i++){
             if(val && nNums[i]){
                 let diff = val > -nNums[i] ? -nNums[i] : val;
                 val-=diff;
@@ -50,6 +51,9 @@ function Solve(k, arr){
                 nNums[i]+=diff;
                 transArr[key]-=diff;
                 transArr[i]+=diff;
+            }
+            if(val===0){
+                break;
             }
         }
     })
@@ -60,4 +64,17 @@ function Solve(k, arr){
     return sum.toString()
 }
 
-Solve(2, [1, 2, 3, -3, -2, -1])
+// function Solve(k, arr){
+//     let sum = 0;
+//     let counter = 0;
+//     arr.forEach((el, i) => {
+//         if(el>=0){
+
+//         }
+//     });
+//     return sum.toString();
+// }
+
+
+Solve(2, [-2,-4,-1,2,5,7,-9,3,-2,1])
+//1 -2 -3 3 1 0
