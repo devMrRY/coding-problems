@@ -3,7 +3,7 @@
 */
 
 function main() {
-  let s1 = "RETICENTRAHUL";
+  let s1 = "YADAV";
   let s2 = "YADAV";
   l1 = s1.length;
   l2 = s2.length;
@@ -11,13 +11,31 @@ function main() {
   console.log(result);
 }
 
+// Solution without cache
+
+// function findLCS(X, Y, i, j) {
+//   if (i === 0 || j === 0) {
+//     return 0;
+//   } else if (X[i-1] === Y[j-1]) {
+//     return 1 + findLCS(X, Y, i - 1, j - 1);
+//   } else {
+//     return Math.max(findLCS(X, Y, i - 1, j), findLCS(X, Y, i, j - 1));
+//   }
+// }
+
+// Solution with cache
+
+let cache = {};
+
 function findLCS(X, Y, i, j) {
   if (i === 0 || j === 0) {
     return 0;
+  } else if (cache[`${i-1},${j-1}`]!=undefined) {
+    return cache[`${i-1},${j-1}`];
   } else if (X[i-1] === Y[j-1]) {
-    return 1 + findLCS(X, Y, i - 1, j - 1);
+      return 1 + findLCS(X, Y, i - 1, j - 1);
   } else {
-    return Math.max(findLCS(X, Y, i - 1, j), findLCS(X, Y, i, j - 1));
+    return cache[`${i-1},${j-1}`] = Math.max(findLCS(X, Y, i - 1, j), findLCS(X, Y, i, j - 1));
   }
 }
 
