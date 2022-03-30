@@ -3,8 +3,8 @@
 */
 
 function main() {
-  let s1 = "RAHUL";
-  let s2 = "RAHSULS";
+  let s1 = "SHINCHAN";
+  let s2 = "NOHARAAA";
   l1 = s1.length;
   l2 = s2.length;
   let result = findLCS(s1, s2, l1, l2);
@@ -40,20 +40,36 @@ function main() {
 // }
 
 // Solution with iterative approach
+// function findLCS(X, Y) {
+//   let arr = Array(X.length).fill(0);
+//   for (let i = 0; i < X.length; i++) {
+//     arr[i] = [Array(Y.length).fill(0)];
+//     for (let j = 0; j < Y.length; j++) {
+//       if (X[i] === Y[j]) {
+//         arr[i][j] = 1 + (arr[i - 1]?.[j - 1] || 0);
+//       } else {
+//         arr[i][j] = Math.max((arr[i - 1]?.[j] || 0), (arr[i]?.[j - 1] || 0));
+//       }
+//     }
+//   }
+//   return arr[X.length - 1][Y.length - 1];
+// }
 
+// Solution with iterative approach optimized
 function findLCS(X, Y) {
-  let arr = Array(X.length).fill(0);
+  let arr = Array(Y.length).fill(0);
+  let temp = 0;
   for (let i = 0; i < X.length; i++) {
-    arr[i] = [Array(Y.length).fill(0)];
     for (let j = 0; j < Y.length; j++) {
+      temp = arr[j];
       if (X[i] === Y[j]) {
-        arr[i][j] = 1 + (arr[i - 1]?.[j - 1] || 0);
+        arr[j] = 1 + (temp || 0);
       } else {
-        arr[i][j] = Math.max((arr[i - 1]?.[j] || 0), (arr[i]?.[j - 1] || 0));
+        arr[j] = Math.max(arr[j - 1] || 0, temp || 0);
       }
     }
   }
-  return arr[X.length - 1][Y.length - 1];
+  return arr[Y.length - 1];
 }
 
 main();
