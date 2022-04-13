@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        #root{
+            margin: 10px;
+            border: 1px solid black;
+            min-height: 90vh;
+        }
+    </style>
+    <script>
+        function startObserve(){
+            var targetNode = document.getElementById('root');
+
+            var config = { 
+                attributes: true, 
+                childList: true, 
+                characterData: true,
+                subtree: true,
+                attributeOldValue: true,
+                characterDataOldValue: true,
+            };
+    
+            var callback = function(mutationsList) {
+                for(let mutation of mutationsList) {
+                    console.log(mutation)
+                }
+            };
+    
+            var observer = new MutationObserver(callback);
+    
+            observer.observe(document, config);
+    
+            // Later, you can stop observing
+            // observer.disconnect();
+        }
+
+        function onload(){
+            startObserve();
+            let el = document.getElementById('root');
+            el.innerHTML='this is text';
+            setTimeout(() => {
+                el.innerHTML='';
+            },100)
+        }
+
+
+        document.addEventListener('DOMContentLoaded', onload);
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
