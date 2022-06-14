@@ -98,3 +98,22 @@ db={
       }
     }
   ])
+
+  {
+    // find 3rd min no.
+    let arr = [5,3,8,4,1,6,1]
+    let result = [Infinity, Infinity, Infinity];
+    for(let i=0; i<arr.length; i++){
+      if(arr[i]<result[0]){
+        result[2]=result[1];
+        result[1]=result[0];
+        result[0]=arr[i];
+      }else if(arr[i]<result[1]){
+        result[2]=result[1];
+        result[1]=arr[i];
+      }else if(arr[i]<result[2]){
+        result[2]=arr[i];
+      }
+    }
+    console.log(result)
+  }

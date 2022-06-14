@@ -1,0 +1,150 @@
+$facet: {
+  firstObj: [], 
+  secObj: []
+}
+
+$bucket: {
+  groupBy: expression,
+  boundaries: [],
+  default: "Other",      // default should be less than or greater than min boundary or max boundary respectively
+  output: {
+     <output1>: { <$accumulator expression> },
+     ...
+  }
+}
+
+$bucketAuto: {
+   groupBy: expression,
+   boundaries: no. of buckets,
+   output: {
+      <output1>: { <$accumulator expression> },
+      ...
+   }
+}
+
+// default output from bucketAuto contains   { count: "no. of documents", max: int, min: int }
+
+$lookup: {
+   from: "collection name",
+   as: alias,
+   localField: "field name",
+   foreignField: "field name"
+}
+
+$group: {_id: "expression or $field", field1: {accumulator: "expression"}, field2: {accumulator: "expression"}, ...}
+
+$merge: {
+   into: "collection name", // into: {db: "database name", coll: "collection name"},
+   on: "identifier name" // ["identifier name1", "identifier name2", ...],    // field used to check whether document matches in output collection or not.
+   whenMatch: "replace",
+   whenNotMatch: "insert"
+}
+
+$out: "collection name" // {db: "database name", coll: "collection name"},
+
+// for sharded collection in output all shareded keys must be present
+
+{ "_id" : 1, "item" : "ABC1",  dimensions: [ { "k": "l", "v": 25} , { "k": "w", "v": 10 }, { "k": "uom", "v": "cm" } ] }
+{ "_id" : 2, "item" : "ABC2",  dimensions: [ [ "l", 50 ], [ "w",  25 ], [ "uom", "cm" ] ] }
+{ "_id" : 3, "item" : "ABC3",  dimensions: [ [ "l", 25 ], [ "l",  "cm" ], [ "l", 50 ] ] }
+
+$arrrayToObject: {$literal: $dimensions}
+
+{ $objectToArray: {
+    item: "foo",
+    qty: 25,
+    size: { len: 25, w: 10, uom: "cm" }
+ } }
+
+
+[
+   {
+      "k" : "item",
+      "v" : "foo"
+   },
+   {
+      "k" : "qty",
+      "v" : 25
+   },
+   {
+      "k" : "size",
+      "v" : {
+         "len" : 25,
+         "w" : 10,
+         "uom" : "cm"
+      }
+   }
+]
+
+
+$sort: {field1: 1, field2: -1}
+
+{$limit: 20}
+{$skip: 20}
+
+$push: {field1: value1, field2: value2, ...}
+$push: {field1: { $each: [5,2,8,9]}}
+$push: {
+       quizzes: {
+          $each: [ { wk: 5, score: 8 }, { wk: 6, score: 7 }, { wk: 7, score: 6 } ],
+          $sort: { score: -1 },
+          $slice: 3
+       }
+     }
+
+$match: {name: 'rahul', field2: "value"}
+
+$unwind: {path: "pathof the field", preserveNullAndEmptyArrays: true, includeArrayIndex: "field name for array index"}  // $unwind: "$field_name"
+
+let: {name: $user.name}
+$$name          // usage
+
+$addFields: {field1: "expression1", field2: "expresssion2", ...}
+
+{ $replaceRoot: {"newRoot": "$grades" }}
+
+{ $replaceWith: "$grades" } // only value for grades will present for next input in pipeline or output
+
+// repalceWith is better alternative for replaceRoot.
+
+$$new: {
+    "$merge" : {
+        into: "myCollection",
+        on: "_id",
+        whenMatched: [
+           {"$project": 
+             {"_id": "$_id",
+              "inner": {"$mergeObjects": ["$inner","$$new.inner"]}
+             }
+           }
+        ],
+        whenNotMatched: "discard"
+    }
+},
+
+$set: 
+{ $set:
+      {
+        quantity: 500,
+        details: { model: "2600", make: "Fashionaires" },
+        tags: [ "coats", "outerwear", "clothing" ]
+      }
+   }
+
+{
+   $mergeObjects: [
+      { a: 1 },
+      { a: 2, b: 2 },
+      { a: 3, c: 3 }
+   ]
+}
+
+$concatArrays: [
+  [
+    {
+      "k": "_id",
+      "v": "$_id"
+    }
+  ],
+  "$items"
+]
