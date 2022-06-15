@@ -152,3 +152,7 @@ $concatArrays: [
 // returns metadata for each document.
 {$meta: "$textScore"}
 {$meta: "$indexKey"}
+
+// indexing mongo
+collectionName.createIndex({ field1: fieldType, field2: fieldtype })
+collectionName.find({ $text: { $search: "coffee" }}, { score: { $meta: "textScore" }})
