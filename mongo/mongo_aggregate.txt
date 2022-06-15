@@ -148,3 +148,7 @@ $concatArrays: [
   ],
   "$items"
 ]
+
+// returns metadata for each document.
+{$meta: "$textScore"}
+{$meta: "$indexKey"}
